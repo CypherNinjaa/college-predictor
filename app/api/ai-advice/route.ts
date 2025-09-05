@@ -11,21 +11,71 @@ interface College {
 async function getGroqAdvice(
 	rank: number,
 	category: string,
+	examType: string,
+	branch: string,
 	colleges: College[]
 ): Promise<string> {
-	const prompt = `You are a Bihar nursing education counselor. A student has DCECE rank ${rank}, category ${category}.
+	// Analyze college data for better insights
+	const totalColleges = colleges.length;
+	const branches = Array.from(new Set(colleges.map((c) => c.branch)));
+	const safeColleges = colleges.filter(
+		(c) => c.closing_rank - rank > rank * 0.2
+	).length;
+	const averageClosingRank = Math.round(
+		colleges.reduce((sum, c) => sum + c.closing_rank, 0) / totalColleges
+	);
 
-Available nursing colleges: ${JSON.stringify(colleges).slice(0, 4000)}
+	// Branch-specific context
+	const branchContext =
+		branch === "All"
+			? `Student is open to all nursing branches (${branches.join(", ")})`
+			: `Student specifically wants ${branch} programs`;
 
-Please provide:
-1. Top 3 best ANM/GNM college recommendations
-2. 2-3 safe backup options
-3. Brief advice about nursing career prospects in Bihar
-4. Keep response EXACTLY under 154 words, friendly tone
+	// Category-specific advice
+	const categoryAdvice = {
+		UR: "As an unreserved category student, focus on colleges with competitive cutoffs.",
+		SC: "SC category provides reservation benefits. You have good chances in government colleges.",
+		ST: "ST reservation gives you significant advantages in government institutions.",
+		OBC: "OBC category offers moderate reservation benefits in Bihar nursing colleges.",
+		EWS: "EWS category provides 10% reservation in government nursing institutions.",
+		EBC: "EBC category gets reservation benefits specific to Bihar state.",
+		RCG: "Recommended category may have special provisions.",
+		DQ: "Disability quota provides reserved seats with relaxed criteria.",
+	};
 
-IMPORTANT: Write in plain text format. Do not use asterisks (*), markdown formatting, or special characters. Write naturally like speaking to a student. Keep it under 154 words.
+	const prompt = `You are an expert Bihar nursing education counselor. 
 
-Focus on Bihar nursing education and avoid engineering college advice.`;
+STUDENT PROFILE:
+- DCECE Rank: ${rank} (Category: ${category})
+- Exam Type: ${examType.replace("_", " ")}
+- Branch Preference: ${
+		branch === "All" ? "Open to all nursing branches" : branch
+	}
+
+DATA ANALYSIS:
+- Total matching colleges: ${totalColleges}
+- Available branches: ${branches.join(", ")}
+- Safe options (good probability): ${safeColleges} colleges
+- Average closing rank: ${averageClosingRank}
+- Your rank position: ${
+		rank < averageClosingRank ? "Better than average" : "Below average"
+	}
+
+CONTEXT: ${branchContext}. ${
+		categoryAdvice[category as keyof typeof categoryAdvice] ||
+		"Consider all available options."
+	}
+
+AVAILABLE COLLEGES: ${JSON.stringify(colleges.slice(0, 8))}
+
+Provide EXACTLY 154 words of personalized advice covering:
+1. Top 2-3 specific college recommendations with reasons
+2. Branch-specific strategy (ANM vs GNM vs other programs)
+3. Safety/backup college advice
+4. Category-specific tips
+5. Bihar nursing career prospects
+
+IMPORTANT: Write in plain conversational tone without asterisks, bullets, or special formatting. Be specific and actionable.`;
 
 	try {
 		const response = await fetch(
@@ -37,10 +87,10 @@ Focus on Bihar nursing education and avoid engineering college advice.`;
 					"Content-Type": "application/json",
 				},
 				body: JSON.stringify({
-					model: "llama-3.1-8b-instant", // Updated working model
+					model: "llama-3.1-8b-instant",
 					messages: [{ role: "user", content: prompt }],
-					temperature: 0.5,
-					max_tokens: 500,
+					temperature: 0.7, // Slightly higher for more personalized responses
+					max_tokens: 200, // Increased for better responses
 				}),
 			}
 		);
@@ -56,19 +106,32 @@ Focus on Bihar nursing education and avoid engineering college advice.`;
 		);
 	} catch (error) {
 		console.error("Groq API error:", error);
-		// Fallback advice if AI fails
-		return `Based on your rank ${rank} in category ${category}, you have ${colleges.length} college options. Consider applying to multiple colleges to increase your chances. ANM programs typically have lower cutoffs than GNM programs. Focus on colleges in your preferred location and check their facilities before making final decisions.`;
+		// Enhanced fallback advice
+		const branchAdvice =
+			branch === "All"
+				? "Consider both ANM and GNM programs as ANM typically has lower cutoffs than GNM."
+				: `Focusing on ${branch} is good as it aligns with your career goals.`;
+
+		return `Based on your rank ${rank} in ${category} category for ${examType.replace(
+			"_",
+			" "
+		)}, you have ${totalColleges} college options. ${branchAdvice} With ${safeColleges} safer options available, apply to multiple colleges including both government and private institutions. ${
+			categoryAdvice[category as keyof typeof categoryAdvice] || ""
+		} Bihar nursing sector offers excellent career prospects with growing healthcare demands. Consider location preferences and college infrastructure when making final decisions.`;
 	}
 }
 
 export async function POST(req: NextRequest) {
 	try {
-		const { rank, category, colleges } = await req.json();
+		const { rank, category, examType, branch, colleges } = await req.json();
 
 		// Validate inputs
-		if (!rank || !category || !colleges) {
+		if (!rank || !category || !examType || !branch || !colleges) {
 			return NextResponse.json(
-				{ error: "Missing required fields: rank, category, and colleges" },
+				{
+					error:
+						"Missing required fields: rank, category, examType, branch, and colleges",
+				},
 				{ status: 400 }
 			);
 		}
@@ -81,7 +144,13 @@ export async function POST(req: NextRequest) {
 		}
 
 		// Get AI explanation
-		const ai_explanation = await getGroqAdvice(rank, category, colleges);
+		const ai_explanation = await getGroqAdvice(
+			rank,
+			category,
+			examType,
+			branch,
+			colleges
+		);
 
 		return NextResponse.json({
 			ai_explanation,
@@ -89,6 +158,8 @@ export async function POST(req: NextRequest) {
 				provider: "groq",
 				query_rank: rank,
 				query_category: category,
+				query_examType: examType,
+				query_branch: branch,
 				colleges_count: colleges.length,
 			},
 		});
@@ -111,7 +182,7 @@ export async function GET() {
 		{
 			error: "This endpoint only accepts POST requests",
 			usage:
-				"Send POST request with { rank: number, category: string, colleges: College[] }",
+				"Send POST request with { rank: number, category: string, examType: string, branch: string, colleges: College[] }",
 		},
 		{ status: 405 }
 	);

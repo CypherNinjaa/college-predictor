@@ -79,10 +79,14 @@ export default function CollegeResults({
 	data,
 	userRank,
 	userCategory,
+	examType,
+	branch,
 }: {
 	data: ResultsData;
 	userRank: number;
 	userCategory: string;
+	examType?: string;
+	branch?: string;
 }) {
 	const [aiAdvice, setAiAdvice] = useState<string>("");
 	const [loadingAI, setLoadingAI] = useState(false);
@@ -97,7 +101,7 @@ export default function CollegeResults({
 	const fetchAIAdvice = async () => {
 		if (loadingAI) return;
 
-		const cacheKey = `${userRank}-${userCategory}`;
+		const cacheKey = `${userRank}-${userCategory}-${examType}-${branch}`;
 
 		// Check cache first
 		if (aiCache.has(cacheKey)) {
@@ -114,10 +118,11 @@ export default function CollegeResults({
 				body: JSON.stringify({
 					rank: userRank,
 					category: userCategory,
+					examType: examType || "DCECE_PM",
+					branch: branch || "All",
 					colleges: data.colleges.slice(0, 10), // Limit data sent to AI
 				}),
 			});
-
 			const result = await response.json();
 			if (result.ai_explanation) {
 				// Limit to 154 words

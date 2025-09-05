@@ -19,20 +19,38 @@ function getDatabase() {
 async function queryColleges(
 	rank: number,
 	category: string,
+	examType: string,
+	branch: string,
 	year: number = 2025
 ): Promise<College[]> {
 	try {
 		const db = getDatabase();
 
-		const query = `
+		// Build dynamic query based on filters
+		let query = `
 			SELECT institute, branch, opening_rank, closing_rank, category
 			FROM nursing_cutoffs 
 			WHERE year = ? AND category = ? AND closing_rank >= ?
-			ORDER BY closing_rank ASC
-			LIMIT 50
 		`;
 
-		const results = db.prepare(query).all(year, category, rank) as any[];
+		const params: any[] = [year, category, rank];
+
+		// Add branch filter if not "All"
+		if (branch !== "All") {
+			query += ` AND branch = ?`;
+			params.push(branch);
+		}
+
+		// Add exam type filter (for future when PMM data is available)
+		// For now, all data is DCECE_PM, so we don't filter by exam type
+		// if (examType === "DCECE_PMM") {
+		//     query += ` AND exam_type = ?`;
+		//     params.push(examType);
+		// }
+
+		query += ` ORDER BY closing_rank ASC LIMIT 50`;
+
+		const results = db.prepare(query).all(...params);
 		db.close();
 
 		return results.map((row: any) => ({
@@ -66,7 +84,7 @@ async function queryColleges(
 
 export async function POST(req: NextRequest) {
 	try {
-		const { rank, category, year = 2025 } = await req.json();
+		const { rank, category, examType, branch, year = 2025 } = await req.json();
 
 		// Validate inputs
 		if (!rank || !category) {
@@ -105,17 +123,48 @@ export async function POST(req: NextRequest) {
 			);
 		}
 
-		// Query colleges
-		const colleges = await queryColleges(rank, category, year);
+		// Validate exam type
+		const validExamTypes = ["DCECE_PM", "DCECE_PMM"];
+		if (examType && !validExamTypes.includes(examType)) {
+			return NextResponse.json(
+				{
+					error:
+						"Invalid exam type. Must be one of: " + validExamTypes.join(", "),
+				},
+				{ status: 400 }
+			);
+		}
 
-		// Return colleges without AI explanation (AI is now on-demand)
+		// Check if PMM data is requested (not available yet)
+		if (examType === "DCECE_PMM") {
+			return NextResponse.json(
+				{
+					error:
+						"DCECE [PMM] data is not available yet. Currently supporting DCECE [PM] only.",
+					colleges: [],
+				},
+				{ status: 400 }
+			);
+		}
+
+		// Query colleges with filters
+		const colleges = await queryColleges(
+			rank,
+			category,
+			examType || "DCECE_PM",
+			branch || "All",
+			year
+		);
+
 		return NextResponse.json({
 			colleges,
 			meta: {
 				count: colleges.length,
-				provider: "groq",
+				provider: "database",
 				query_rank: rank,
 				query_category: category,
+				query_examType: examType || "DCECE_PM",
+				query_branch: branch || "All",
 			},
 		});
 	} catch (error: any) {
@@ -124,8 +173,6 @@ export async function POST(req: NextRequest) {
 			{
 				error: "Failed to predict colleges. Please try again.",
 				colleges: [],
-				ai_explanation:
-					"Unable to generate predictions at the moment. Please check your inputs and try again.",
 			},
 			{ status: 500 }
 		);
@@ -138,7 +185,7 @@ export async function GET() {
 		{
 			error: "This endpoint only accepts POST requests",
 			usage:
-				"Send POST request with { rank: number, category: string, year?: number }",
+				"Send POST request with { rank: number, category: string, examType?: string, branch?: string, year?: number }",
 		},
 		{ status: 405 }
 	);

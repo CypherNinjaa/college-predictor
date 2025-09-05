@@ -7,6 +7,8 @@ import LoadingSpinner from "./LoadingSpinner";
 interface PredictFormData {
 	rank: string;
 	category: string;
+	examType: string;
+	branch: string;
 	year: number;
 }
 
@@ -26,6 +28,8 @@ export default function PredictForm() {
 	const [formData, setFormData] = useState<PredictFormData>({
 		rank: "",
 		category: "UR",
+		examType: "DCECE_PM",
+		branch: "All",
 		year: 2025,
 	});
 
@@ -44,6 +48,28 @@ export default function PredictForm() {
 		{ value: "DQ", label: "Disabled Quota (DQ)" },
 	];
 
+	const examTypes = [
+		{
+			value: "DCECE_PM",
+			label: "DCECE [PM] - Physics, Chemistry, Mathematics",
+		},
+		{
+			value: "DCECE_PMM",
+			label: "DCECE [PMM] - Physics, Chemistry, Mathematics (Coming Soon)",
+			disabled: true,
+		},
+	];
+
+	const branches = [
+		{ value: "All", label: "All Branches" },
+		{ value: "G.N.M.", label: "General Nursing & Midwifery (GNM)" },
+		{ value: "A.N.M.", label: "Auxiliary Nursing & Midwifery (ANM)" },
+		{ value: "Pharmacy", label: "Pharmacy" },
+		{ value: "O.T. ASSISTANT", label: "Operation Theatre Assistant (OT)" },
+		{ value: "Lab", label: "Laboratory Technician" },
+		{ value: "Other", label: "Other Medical Programs" },
+	];
+
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 		setLoading(true);
@@ -59,6 +85,8 @@ export default function PredictForm() {
 				body: JSON.stringify({
 					rank: parseInt(formData.rank),
 					category: formData.category,
+					examType: formData.examType,
+					branch: formData.branch,
 					year: formData.year,
 				}),
 			});
@@ -87,8 +115,8 @@ export default function PredictForm() {
 						🎯 Predict Your Nursing College
 					</h3>
 					<p className="text-primary-100 mt-2">
-						Enter your DCECE rank and category to get personalized college
-						predictions with safety probability levels.
+						Enter your DCECE rank, category, exam type, and preferred branch to
+						get personalized college predictions with safety probability levels.
 					</p>
 				</div>
 
@@ -98,6 +126,38 @@ export default function PredictForm() {
 						onSubmit={handleSubmit}
 						className="grid grid-cols-1 md:grid-cols-2 gap-6"
 					>
+						{/* DCECE Exam Type Selection */}
+						<div className="md:col-span-2 space-y-2">
+							<label
+								htmlFor="examType"
+								className="block text-sm font-semibold text-newton-700"
+							>
+								DCECE Exam Type *
+							</label>
+							<select
+								id="examType"
+								value={formData.examType}
+								onChange={(e) =>
+									setFormData({ ...formData, examType: e.target.value })
+								}
+								className="w-full h-12 px-4 border-2 border-newton-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 text-newton-900 bg-white"
+							>
+								{examTypes.map((exam) => (
+									<option
+										key={exam.value}
+										value={exam.value}
+										disabled={exam.disabled}
+									>
+										{exam.label}
+									</option>
+								))}
+							</select>
+							<p className="text-xs text-newton-500">
+								Select your DCECE exam type. Currently supporting DCECE [PM]
+								data.
+							</p>
+						</div>
+
 						{/* DCECE Rank Input */}
 						<div className="space-y-2">
 							<label
@@ -159,6 +219,34 @@ export default function PredictForm() {
 							</select>
 							<p className="text-xs text-newton-500">
 								Select your reservation category as per DCECE result
+							</p>
+						</div>
+
+						{/* Branch Selection */}
+						<div className="md:col-span-2 space-y-2">
+							<label
+								htmlFor="branch"
+								className="block text-sm font-semibold text-newton-700"
+							>
+								Preferred Branch *
+							</label>
+							<select
+								id="branch"
+								value={formData.branch}
+								onChange={(e) =>
+									setFormData({ ...formData, branch: e.target.value })
+								}
+								className="w-full h-12 px-4 border-2 border-newton-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 text-newton-900 bg-white"
+							>
+								{branches.map((branch) => (
+									<option key={branch.value} value={branch.value}>
+										{branch.label}
+									</option>
+								))}
+							</select>
+							<p className="text-xs text-newton-500">
+								Select your preferred branch or "All Branches" to see all
+								available options
 							</p>
 						</div>
 
@@ -285,6 +373,8 @@ export default function PredictForm() {
 					data={result}
 					userRank={parseInt(formData.rank)}
 					userCategory={formData.category}
+					examType={formData.examType}
+					branch={formData.branch}
 				/>
 			)}
 		</div>
