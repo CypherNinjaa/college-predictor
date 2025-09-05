@@ -21,6 +21,7 @@ async function queryColleges(
 	category: string,
 	examType: string,
 	branch: string,
+	collegeType: string,
 	year: number = 2025
 ): Promise<College[]> {
 	try {
@@ -40,6 +41,110 @@ async function queryColleges(
 			query += ` AND branch = ?`;
 			params.push(branch);
 		}
+
+		// Add college type filter based on comprehensive naming patterns
+		if (collegeType === "Government") {
+			// Government colleges include:
+			// 1. Branch-specific: "G.N.M. SCHOOL", "GNM SCHOOL", "GNM TRAINING", "(GNM)", etc.
+			// 2. Medical colleges: "S.K.M.C.H.", "P.M.I.", "D.M.C.H.", "N.M.C.H.", etc.
+			// 3. Government institutions: "G.M.C.", "GOVERNMENT", etc.
+
+			const govPatterns = [
+				// Branch-specific patterns
+				"institute LIKE 'G.N.M.%'",
+				"institute LIKE 'GNM %'",
+				"institute LIKE '%GNM SCHOOL%'",
+				"institute LIKE '%GNM TRAINING%'",
+				"institute LIKE '%(GNM)%'",
+				"institute LIKE 'A.N.M.%'",
+				"institute LIKE 'ANM %'",
+				"institute LIKE '%ANM SCHOOL%'",
+				"institute LIKE '%ANM TRAINING%'",
+				"institute LIKE '%(ANM%'",
+				"institute LIKE '%ANM)%'",
+				"institute LIKE 'PHARMACY%'",
+				"institute LIKE 'O.T.%'",
+				"institute LIKE 'LAB%'",
+
+				// Medical college abbreviations (Government institutions)
+				"institute LIKE 'S.K.M.C.H.%'",
+				"institute LIKE 'P.M.I.%'",
+				"institute LIKE 'A.H.S.%'",
+				"institute LIKE 'A.N.M.M.C.H.%'",
+				"institute LIKE 'B.M.I.M.S.%'",
+				"institute LIKE 'D.M.C.H.%'",
+				"institute LIKE 'G.M.C.%'",
+				"institute LIKE 'G.P.I.%'",
+				"institute LIKE 'J.L.N.M.C.H.%'",
+				"institute LIKE 'N.M.C.H.%'",
+				"institute LIKE 'P.H.I.%'",
+				"institute LIKE 'P.M.C.H.%'",
+				"institute LIKE 'PATNA DENTAL%'",
+
+				// Other government patterns
+				"institute LIKE 'GOVERNMENT%'",
+				"institute LIKE 'GOVT%'",
+				"institute LIKE 'STATE%'",
+				"institute LIKE 'DISTRICT%'",
+				"institute LIKE '%CHC%'",
+				"institute LIKE '%PHC%'",
+				"institute LIKE '%SDH%'",
+				"institute LIKE '%SADAR%'",
+				"institute LIKE 'CIVIL%'",
+				"institute LIKE '%MEDICAL COLLEGE%'",
+			];
+
+			query += ` AND (${govPatterns.join(" OR ")})`;
+		} else if (collegeType === "Private") {
+			// Private colleges - exclude all government patterns
+			const govPatterns = [
+				// Branch-specific patterns
+				"institute LIKE 'G.N.M.%'",
+				"institute LIKE 'GNM %'",
+				"institute LIKE '%GNM SCHOOL%'",
+				"institute LIKE '%GNM TRAINING%'",
+				"institute LIKE '%(GNM)%'",
+				"institute LIKE 'A.N.M.%'",
+				"institute LIKE 'ANM %'",
+				"institute LIKE '%ANM SCHOOL%'",
+				"institute LIKE '%ANM TRAINING%'",
+				"institute LIKE '%(ANM%'",
+				"institute LIKE '%ANM)%'",
+				"institute LIKE 'PHARMACY%'",
+				"institute LIKE 'O.T.%'",
+				"institute LIKE 'LAB%'",
+
+				// Medical college abbreviations
+				"institute LIKE 'S.K.M.C.H.%'",
+				"institute LIKE 'P.M.I.%'",
+				"institute LIKE 'A.H.S.%'",
+				"institute LIKE 'A.N.M.M.C.H.%'",
+				"institute LIKE 'B.M.I.M.S.%'",
+				"institute LIKE 'D.M.C.H.%'",
+				"institute LIKE 'G.M.C.%'",
+				"institute LIKE 'G.P.I.%'",
+				"institute LIKE 'J.L.N.M.C.H.%'",
+				"institute LIKE 'N.M.C.H.%'",
+				"institute LIKE 'P.H.I.%'",
+				"institute LIKE 'P.M.C.H.%'",
+				"institute LIKE 'PATNA DENTAL%'",
+
+				// Other government patterns
+				"institute LIKE 'GOVERNMENT%'",
+				"institute LIKE 'GOVT%'",
+				"institute LIKE 'STATE%'",
+				"institute LIKE 'DISTRICT%'",
+				"institute LIKE '%CHC%'",
+				"institute LIKE '%PHC%'",
+				"institute LIKE '%SDH%'",
+				"institute LIKE '%SADAR%'",
+				"institute LIKE 'CIVIL%'",
+				"institute LIKE '%MEDICAL COLLEGE%'",
+			];
+
+			query += ` AND NOT (${govPatterns.join(" OR ")})`;
+		}
+		// If collegeType is "All", no additional filter needed
 
 		// Add exam type filter (for future when PMM data is available)
 		// For now, all data is DCECE_PM, so we don't filter by exam type
@@ -84,7 +189,14 @@ async function queryColleges(
 
 export async function POST(req: NextRequest) {
 	try {
-		const { rank, category, examType, branch, year = 2025 } = await req.json();
+		const {
+			rank,
+			category,
+			examType,
+			branch,
+			collegeType,
+			year = 2025,
+		} = await req.json();
 
 		// Validate inputs
 		if (!rank || !category) {
@@ -135,6 +247,19 @@ export async function POST(req: NextRequest) {
 			);
 		}
 
+		// Validate college type
+		const validCollegeTypes = ["All", "Government", "Private"];
+		if (collegeType && !validCollegeTypes.includes(collegeType)) {
+			return NextResponse.json(
+				{
+					error:
+						"Invalid college type. Must be one of: " +
+						validCollegeTypes.join(", "),
+				},
+				{ status: 400 }
+			);
+		}
+
 		// Check if PMM data is requested (not available yet)
 		if (examType === "DCECE_PMM") {
 			return NextResponse.json(
@@ -153,6 +278,7 @@ export async function POST(req: NextRequest) {
 			category,
 			examType || "DCECE_PM",
 			branch || "All",
+			collegeType || "All",
 			year
 		);
 

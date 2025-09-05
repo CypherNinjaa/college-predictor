@@ -81,12 +81,14 @@ export default function CollegeResults({
 	userCategory,
 	examType,
 	branch,
+	collegeType,
 }: {
 	data: ResultsData;
 	userRank: number;
 	userCategory: string;
 	examType?: string;
 	branch?: string;
+	collegeType?: string;
 }) {
 	const [aiAdvice, setAiAdvice] = useState<string>("");
 	const [loadingAI, setLoadingAI] = useState(false);
@@ -101,7 +103,7 @@ export default function CollegeResults({
 	const fetchAIAdvice = async () => {
 		if (loadingAI) return;
 
-		const cacheKey = `${userRank}-${userCategory}-${examType}-${branch}`;
+		const cacheKey = `${userRank}-${userCategory}-${examType}-${branch}-${collegeType}`;
 
 		// Check cache first
 		if (aiCache.has(cacheKey)) {
@@ -120,6 +122,7 @@ export default function CollegeResults({
 					category: userCategory,
 					examType: examType || "DCECE_PM",
 					branch: branch || "All",
+					collegeType: collegeType || "All",
 					colleges: data.colleges.slice(0, 10), // Limit data sent to AI
 				}),
 			});

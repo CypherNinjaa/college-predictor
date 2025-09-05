@@ -9,6 +9,7 @@ interface PredictFormData {
 	category: string;
 	examType: string;
 	branch: string;
+	collegeType: string;
 	year: number;
 }
 
@@ -30,6 +31,7 @@ export default function PredictForm() {
 		category: "UR",
 		examType: "DCECE_PM",
 		branch: "All",
+		collegeType: "All",
 		year: 2025,
 	});
 
@@ -41,7 +43,7 @@ export default function PredictForm() {
 		{ value: "UR", label: "Unreserved (UR)" },
 		{ value: "SC", label: "Scheduled Caste (SC)" },
 		{ value: "ST", label: "Scheduled Tribe (ST)" },
-		{ value: "OBC", label: "Other Backward Class (OBC)" },
+		{ value: "BC", label: "Backward Class (BC)" },
 		{ value: "EWS", label: "Economically Weaker Section (EWS)" },
 		{ value: "EBC", label: "Extremely Backward Class (EBC)" },
 		{ value: "RCG", label: "Recommended Category (RCG)" },
@@ -87,6 +89,7 @@ export default function PredictForm() {
 					category: formData.category,
 					examType: formData.examType,
 					branch: formData.branch,
+					collegeType: formData.collegeType,
 					year: formData.year,
 				}),
 			});
@@ -250,6 +253,33 @@ export default function PredictForm() {
 							</p>
 						</div>
 
+						{/* College Type Selection */}
+						<div className="md:col-span-2 space-y-2">
+							<label
+								htmlFor="collegeType"
+								className="block text-sm font-semibold text-newton-700"
+							>
+								College Type *
+							</label>
+							<select
+								id="collegeType"
+								value={formData.collegeType}
+								onChange={(e) =>
+									setFormData({ ...formData, collegeType: e.target.value })
+								}
+								className="w-full h-12 px-4 border-2 border-newton-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 text-newton-900 bg-white"
+							>
+								<option value="All">All Colleges</option>
+								<option value="Government">Government Colleges</option>
+								<option value="Private">Private Colleges</option>
+							</select>
+							<p className="text-xs text-newton-500">
+								Government colleges include: Nursing schools, Medical colleges
+								(P.M.I., D.M.C.H., etc.), and government institutions. Private
+								colleges have different naming patterns.
+							</p>
+						</div>
+
 						{/* Submit Button */}
 						<div className="md:col-span-2 pt-4">
 							<button
@@ -375,8 +405,17 @@ export default function PredictForm() {
 					userCategory={formData.category}
 					examType={formData.examType}
 					branch={formData.branch}
+					collegeType={formData.collegeType}
 				/>
 			)}
+
+			{/* Subtle Disclaimer */}
+			<div className="mt-8 text-center">
+				<p className="text-xs text-gray-400 opacity-75">
+					This is a prediction tool for guidance only. Please verify with
+					official sources.
+				</p>
+			</div>
 		</div>
 	);
 }
