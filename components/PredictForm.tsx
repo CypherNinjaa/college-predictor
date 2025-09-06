@@ -66,9 +66,11 @@ export default function PredictForm() {
 		{ value: "All", label: "All Branches" },
 		{ value: "G.N.M.", label: "General Nursing & Midwifery (GNM)" },
 		{ value: "A.N.M.", label: "Auxiliary Nursing & Midwifery (ANM)" },
-		{ value: "Pharmacy", label: "Pharmacy" },
+		{ value: "DIPLOMA IN\nPHARMACY", label: "Diploma in Pharmacy" },
 		{ value: "O.T. ASSISTANT", label: "Operation Theatre Assistant (OT)" },
-		{ value: "Lab", label: "Laboratory Technician" },
+		{ value: "LABORATORY\nTECHNICIAN", label: "Laboratory Technician" },
+		{ value: "X' RAY\nTECHNICIAN", label: "X-Ray Technician" },
+		{ value: "OPTHALMIC\nASSISTANT", label: "Ophthalmic Assistant" },
 		{ value: "Other", label: "Other Medical Programs" },
 	];
 
