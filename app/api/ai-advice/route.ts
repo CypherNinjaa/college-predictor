@@ -27,10 +27,25 @@ async function getGroqAdvice(
 	);
 
 	// Branch-specific context
+	const getBranchDisplayName = (branchValue: string): string => {
+		const branchMap: { [key: string]: string } = {
+			"G.N.M.": "General Nursing & Midwifery (GNM)",
+			"A.N.M.": "Auxiliary Nursing & Midwifery (ANM)",
+			"DIPLOMA IN\nPHARMACY": "Diploma in Pharmacy",
+			"O.T. ASSISTANT": "Operation Theatre Assistant (OT)",
+			"LABORATORY\nTECHNICIAN": "Laboratory Technician",
+			"X' RAY\nTECHNICIAN": "X-Ray Technician",
+			"OPTHALMIC\nASSISTANT": "Ophthalmic Assistant",
+		};
+		return branchMap[branchValue] || branchValue;
+	};
+
 	const branchContext =
 		branch === "All"
-			? `Student is open to all nursing branches (${branches.join(", ")})`
-			: `Student specifically wants ${branch} programs`;
+			? `Student is open to all nursing branches (${branches
+					.map(getBranchDisplayName)
+					.join(", ")})`
+			: `Student specifically wants ${getBranchDisplayName(branch)} programs`;
 
 	// College type specific context
 	const collegeTypeContext = {
@@ -59,13 +74,15 @@ STUDENT PROFILE:
 - DCECE Rank: ${rank} (Category: ${category})
 - Exam Type: ${examType.replace("_", " ")}
 - Branch Preference: ${
-		branch === "All" ? "Open to all nursing branches" : branch
+		branch === "All"
+			? "Open to all nursing branches"
+			: getBranchDisplayName(branch)
 	}
 - College Type Preference: ${collegeType}
 
 DATA ANALYSIS:
 - Total matching colleges: ${totalColleges}
-- Available branches: ${branches.join(", ")}
+- Available branches: ${branches.map(getBranchDisplayName).join(", ")}
 - Safe options (good probability): ${safeColleges} colleges
 - Average closing rank: ${averageClosingRank}
 - Your rank position: ${
@@ -91,7 +108,11 @@ Provide EXACTLY 154 words of personalized advice covering:
 			? "Private college considerations (fees, facilities, admission flexibility)"
 			: "Government vs Private college comparison"
 	}
-3. Branch-specific strategy (ANM vs GNM vs other programs)
+3. Branch-specific strategy (${
+		branch === "All"
+			? "ANM vs GNM vs Pharmacy vs OT vs Lab Technician programs"
+			: `${getBranchDisplayName(branch)} program strategy`
+	})
 4. Safety/backup college advice based on college type preference
 5. Category-specific tips and Bihar nursing career prospects
 
@@ -127,10 +148,32 @@ IMPORTANT: Write in plain conversational tone without asterisks, bullets, or spe
 	} catch (error) {
 		console.error("Groq API error:", error);
 		// Enhanced fallback advice
-		const branchAdvice =
-			branch === "All"
-				? "Consider both ANM and GNM programs as ANM typically has lower cutoffs than GNM."
-				: `Focusing on ${branch} is good as it aligns with your career goals.`;
+		const getBranchAdvice = (branchValue: string): string => {
+			switch (branchValue) {
+				case "All":
+					return "Consider ANM, GNM, Pharmacy, and paramedical programs. ANM typically has lower cutoffs than GNM, while Pharmacy and lab technician programs have specialized career paths.";
+				case "G.N.M.":
+					return "GNM is a comprehensive 3-year program with excellent nursing career prospects and higher eligibility for government jobs.";
+				case "A.N.M.":
+					return "ANM is a 2-year program with relatively lower cutoffs and good job opportunities in rural healthcare settings.";
+				case "DIPLOMA IN\nPHARMACY":
+					return "Pharmacy diploma offers excellent opportunities in pharmaceutical sector with both government and private career options.";
+				case "O.T. ASSISTANT":
+					return "Operation Theatre Assistant is a specialized program with high demand in hospitals and surgical centers.";
+				case "LABORATORY\nTECHNICIAN":
+					return "Laboratory Technician programs offer stable careers in diagnostic centers, hospitals, and research facilities.";
+				case "X' RAY\nTECHNICIAN":
+					return "X-Ray Technician is a specialized radiology program with excellent job prospects in hospitals and diagnostic centers.";
+				case "OPTHALMIC\nASSISTANT":
+					return "Ophthalmic Assistant specializes in eye care with growing demand in ophthalmology clinics and hospitals.";
+				default:
+					return `Focusing on ${getBranchDisplayName(
+						branchValue
+					)} aligns with your career goals.`;
+			}
+		};
+
+		const branchAdvice = getBranchAdvice(branch);
 
 		const typeAdvice =
 			collegeType === "Government"
