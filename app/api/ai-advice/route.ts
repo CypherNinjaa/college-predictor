@@ -36,6 +36,7 @@ async function getGroqAdvice(
 			"LABORATORY\nTECHNICIAN": "Laboratory Technician",
 			"X' RAY\nTECHNICIAN": "X-Ray Technician",
 			"OPTHALMIC\nASSISTANT": "Ophthalmic Assistant",
+			DRESSER: "Dresser (Medical Assistant)",
 		};
 		return branchMap[branchValue] || branchValue;
 	};
@@ -110,7 +111,7 @@ Provide EXACTLY 154 words of personalized advice covering:
 	}
 3. Branch-specific strategy (${
 		branch === "All"
-			? "ANM vs GNM vs Pharmacy vs OT vs Lab Technician programs"
+			? "ANM vs GNM vs Pharmacy vs OT vs Lab Technician vs Dresser programs"
 			: `${getBranchDisplayName(branch)} program strategy`
 	})
 4. Safety/backup college advice based on college type preference

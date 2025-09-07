@@ -82,6 +82,7 @@ export default function CollegeResults({
 	examType,
 	branch,
 	collegeType,
+	onReset,
 }: {
 	data: ResultsData;
 	userRank: number;
@@ -89,6 +90,7 @@ export default function CollegeResults({
 	examType?: string;
 	branch?: string;
 	collegeType?: string;
+	onReset?: () => void;
 }) {
 	const [aiAdvice, setAiAdvice] = useState<string>("");
 	const [loadingAI, setLoadingAI] = useState(false);
@@ -339,7 +341,10 @@ export default function CollegeResults({
 							<span className="bg-primary-100 text-primary-800 text-sm font-semibold px-3 py-1.5 rounded-full">
 								{data.colleges.length} Colleges Found
 							</span>
-							<button className="text-primary-600 hover:text-primary-700 font-medium text-sm flex items-center space-x-1">
+							<button
+								onClick={onReset}
+								className="text-primary-600 hover:text-primary-700 font-medium text-sm flex items-center space-x-1 transition-colors duration-200"
+							>
 								<svg
 									className="w-4 h-4"
 									fill="none"

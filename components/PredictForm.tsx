@@ -57,12 +57,11 @@ export default function PredictForm() {
 		},
 		{
 			value: "DCECE_PMM",
-			label: "DCECE [PMM] - Physics, Chemistry, Mathematics (Coming Soon)",
-			disabled: true,
+			label: "DCECE [PMM] - Physics, Mathematics, Mathematics",
 		},
 	];
 
-	const branches = [
+	const allBranches = [
 		{ value: "All", label: "All Branches" },
 		{ value: "G.N.M.", label: "General Nursing & Midwifery (GNM)" },
 		{ value: "A.N.M.", label: "Auxiliary Nursing & Midwifery (ANM)" },
@@ -71,8 +70,15 @@ export default function PredictForm() {
 		{ value: "LABORATORY\nTECHNICIAN", label: "Laboratory Technician" },
 		{ value: "X' RAY\nTECHNICIAN", label: "X-Ray Technician" },
 		{ value: "OPTHALMIC\nASSISTANT", label: "Ophthalmic Assistant" },
+		{ value: "DRESSER", label: "Dresser (Medical Assistant)" },
 		{ value: "Other", label: "Other Medical Programs" },
 	];
+
+	// Filter branches based on exam type
+	const branches =
+		formData.examType === "DCECE_PMM"
+			? [{ value: "DRESSER", label: "Dresser (Medical Assistant)" }]
+			: allBranches;
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
@@ -110,6 +116,20 @@ export default function PredictForm() {
 		}
 	};
 
+	const handleReset = () => {
+		setFormData({
+			rank: "",
+			category: "UR",
+			examType: "DCECE_PM",
+			branch: "All",
+			collegeType: "All",
+			year: 2025,
+		});
+		setResult(null);
+		setError(null);
+		setLoading(false);
+	};
+
 	return (
 		<div className="max-w-4xl mx-auto space-y-8">
 			{/* Form Card */}
@@ -142,24 +162,32 @@ export default function PredictForm() {
 							<select
 								id="examType"
 								value={formData.examType}
-								onChange={(e) =>
-									setFormData({ ...formData, examType: e.target.value })
-								}
+								onChange={(e) => {
+									const newExamType = e.target.value;
+									setFormData((prev) => ({
+										...prev,
+										examType: newExamType,
+										// Auto-set branch based on exam type
+										branch:
+											newExamType === "DCECE_PMM"
+												? "DRESSER"
+												: prev.branch === "DRESSER" &&
+												  newExamType !== "DCECE_PMM"
+												? "All"
+												: prev.branch,
+									}));
+								}}
 								className="w-full h-12 px-4 border-2 border-newton-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 text-newton-900 bg-white"
 							>
 								{examTypes.map((exam) => (
-									<option
-										key={exam.value}
-										value={exam.value}
-										disabled={exam.disabled}
-									>
+									<option key={exam.value} value={exam.value}>
 										{exam.label}
 									</option>
 								))}
 							</select>
 							<p className="text-xs text-newton-500">
-								Select your DCECE exam type. Currently supporting DCECE [PM]
-								data.
+								Select your DCECE exam type. PM offers multiple branches, PMM
+								only offers DRESSER program.
 							</p>
 						</div>
 
@@ -250,8 +278,9 @@ export default function PredictForm() {
 								))}
 							</select>
 							<p className="text-xs text-newton-500">
-								Select your preferred branch or "All Branches" to see all
-								available options
+								{formData.examType === "DCECE_PMM"
+									? "PMM exam only offers DRESSER (Medical Assistant) program"
+									: 'Select your preferred branch or "All Branches" to see all available options'}
 							</p>
 						</div>
 
@@ -408,6 +437,7 @@ export default function PredictForm() {
 					examType={formData.examType}
 					branch={formData.branch}
 					collegeType={formData.collegeType}
+					onReset={handleReset}
 				/>
 			)}
 
