@@ -1,226 +1,215 @@
 import PredictForm from "@/components/PredictForm";
+import SuccessStories from "@/components/SuccessStories";
+import WhyChoosePredictor from "@/components/WhyChoosePredictor";
+import CoachingSection from "@/components/CoachingSection";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function HomePage() {
 	return (
-		<div className="space-y-16">
-			{/* Hero Section */}
-			<div className="text-center space-y-8 pt-8">
-				<div className="max-w-4xl mx-auto space-y-6">
-					<h1 className="text-5xl md:text-6xl font-bold text-newton-900 leading-tight">
-						Bihar [PM/PMM] Government College Predictor
-						
-						<span className="block text-primary-600 text-4xl md:text-5xl mt-2">
-							2025
-						</span>
-					</h1>
-					<p className="text-xl md:text-2xl text-newton-600 max-w-3xl mx-auto leading-relaxed">
-						Get AI-powered predictions for Bihar nursing colleges based on your
-						DCECE rank. Discover ANM, GNM and other programs that match your profile.
-					</p>
+		<div className="space-y-20">
+			{/* Hero Section with Medical Theme */}
+			<section className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-green-50">
+				<div className="absolute inset-0">
+					{/* Medical Pattern Background */}
+					<div className="absolute inset-0 opacity-5">
+						<svg className="w-full h-full" viewBox="0 0 100 100" fill="none">
+							<pattern
+								id="medical-cross"
+								x="0"
+								y="0"
+								width="20"
+								height="20"
+								patternUnits="userSpaceOnUse"
+							>
+								<path
+									d="M10 3L10 17M3 10L17 10"
+									stroke="#1e40af"
+									strokeWidth="1"
+									strokeLinecap="round"
+								/>
+							</pattern>
+							<rect width="100" height="100" fill="url(#medical-cross)" />
+						</svg>
+					</div>
+				</div>
 
-					{/* Trust Indicators */}
-					<div className="flex flex-wrap justify-center items-center gap-6 text-sm pt-4">
-						<div className="flex items-center text-accent-green font-medium">
-							<svg
-								className="w-5 h-5 mr-2"
-								fill="currentColor"
-								viewBox="0 0 20 20"
-							>
-								<path
-									fillRule="evenodd"
-									d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-									clipRule="evenodd"
-								/>
-							</svg>
-							No Hidden Charges, 100% Free
+				<div className="relative max-w-7xl mx-auto px-4 py-16 sm:py-24">
+					<div className="text-center space-y-8">
+						{/* Main Hero Content */}
+						<div className="max-w-4xl mx-auto space-y-6">
+							<div className="inline-flex items-center bg-medical-light text-medical-blue px-4 py-2 rounded-full text-sm font-medium mb-6">
+								<svg
+									className="w-4 h-4 mr-2"
+									fill="currentColor"
+									viewBox="0 0 20 20"
+								>
+									<path
+										fillRule="evenodd"
+										d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+										clipRule="evenodd"
+									/>
+								</svg>
+								🏥 Bihar's #1 Nursing College Predictor • 100% Free
+							</div>
+
+							<h1 className="text-4xl md:text-6xl font-bold text-medical-dark leading-tight">
+								Find Your Perfect
+								<span className="block text-medical-blue">Nursing College</span>
+								<span className="block text-3xl md:text-4xl text-green-600 mt-2">
+									DCECE 2025 🩺
+								</span>
+							</h1>
+
+							<p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+								Get AI-powered predictions for Bihar nursing colleges based on
+								your DCECE rank.
+								<span className="text-medical-blue font-semibold">
+									ANM, GNM & DRESSER programs
+								</span>{" "}
+								- all in one place with expert guidance from Study With Ritesh.
+							</p>
 						</div>
-						<div className="flex items-center text-newton-600">
-							<svg
-								className="w-5 h-5 mr-2 text-primary-500"
-								fill="currentColor"
-								viewBox="0 0 20 20"
+
+						{/* Hero Stats */}
+						<div className="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-4xl mx-auto pt-8">
+							<div className="bg-white rounded-2xl p-6 shadow-lg border border-medical-light">
+								<div className="text-3xl font-bold text-medical-blue">
+									2,111+
+								</div>
+								<div className="text-sm text-gray-600 font-medium">
+									Nursing Colleges
+								</div>
+							</div>
+							<div className="bg-white rounded-2xl p-6 shadow-lg border border-medical-light">
+								<div className="text-3xl font-bold text-green-600">85%</div>
+								<div className="text-sm text-gray-600 font-medium">
+									Accuracy Rate
+								</div>
+							</div>
+							<div className="bg-white rounded-2xl p-6 shadow-lg border border-medical-light">
+								<div className="text-3xl font-bold text-purple-600">50K+</div>
+								<div className="text-sm text-gray-600 font-medium">
+									Students Helped
+								</div>
+							</div>
+							<div className="bg-white rounded-2xl p-6 shadow-lg border border-medical-light">
+								<div className="text-3xl font-bold text-red-500">FREE</div>
+								<div className="text-sm text-gray-600 font-medium">
+									No Hidden Charges
+								</div>
+							</div>
+						</div>
+
+						{/* CTA Buttons */}
+						<div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8">
+							<a
+								href="#predictor"
+								className="bg-medical-blue hover:bg-blue-700 text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all transform hover:scale-105 flex items-center space-x-2"
 							>
-								<path
-									fillRule="evenodd"
-									d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-									clipRule="evenodd"
-								/>
-							</svg>
-							76,850 DCECE 2025 Aspirants have already predicted their college
+								<svg
+									className="w-5 h-5"
+									fill="currentColor"
+									viewBox="0 0 20 20"
+								>
+									<path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+								</svg>
+								<span>Start Prediction Now</span>
+							</a>
+							<a
+								href="#coaching"
+								className="bg-green-500 hover:bg-green-600 text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all transform hover:scale-105 flex items-center space-x-2"
+							>
+								<svg
+									className="w-5 h-5"
+									fill="currentColor"
+									viewBox="0 0 20 20"
+								>
+									<path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3z" />
+								</svg>
+								<span>Join Our Coaching</span>
+							</a>
 						</div>
 					</div>
 				</div>
-			</div>
+			</section>
 
-			{/* Stats Section with Newton Style */}
-			<div className="max-w-6xl mx-auto">
-				<div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-					<div className="bg-white rounded-2xl p-8 text-center shadow-newton hover:shadow-newton-lg transition-shadow duration-300">
-						<div className="text-4xl md:text-5xl font-bold text-primary-600 mb-2">
-							1,575+
-						</div>
-						<div className="text-newton-600 font-medium">
-							Nursing Colleges in Database
-						</div>
-						<div className="text-sm text-newton-500 mt-1">
-							ANM & GNM Programs
-						</div>
-					</div>
-					<div className="bg-white rounded-2xl p-8 text-center shadow-newton hover:shadow-newton-lg transition-shadow duration-300">
-						<div className="text-4xl md:text-5xl font-bold text-primary-600 mb-2">
-							9
-						</div>
-						<div className="text-newton-600 font-medium">
-							Category Types Supported
-						</div>
-						<div className="text-sm text-newton-500 mt-1">
-							UR, SC, ST, OBC, EWS & More
-						</div>
-					</div>
-					<div className="bg-white rounded-2xl p-8 text-center shadow-newton hover:shadow-newton-lg transition-shadow duration-300">
-						<div className="text-4xl md:text-5xl font-bold text-primary-600 mb-2">
-							2025
-						</div>
-						<div className="text-newton-600 font-medium">
-							Latest DCECE Cutoffs
-						</div>
-						<div className="text-sm text-newton-500 mt-1">
-							Updated & Verified Data
-						</div>
-					</div>
+			{/* Study With Ritesh Coaching Section */}
+			<CoachingSection />
+
+			{/* Medical Features Section */}
+			<WhyChoosePredictor />
+
+			{/* College Predictor Form */}
+			<section id="predictor" className="py-16">
+				<div className="max-w-4xl mx-auto px-4">
+					<PredictForm />
 				</div>
-			</div>
+			</section>
 
-			{/* AI Predictions Feature Section */}
-			<div className="max-w-6xl mx-auto hidden md:block">
-				<div className="bg-gradient-to-br from-slate-900 to-blue-900 rounded-3xl p-8 md:p-12 text-white">
-					<div className="max-w-4xl mx-auto text-center space-y-6">
-						<h2 className="text-3xl md:text-4xl font-bold mb-4">
-							Accurate, AI-Driven Predictions Using Past Data Trends
+			{/* Success Stories Section */}
+			<SuccessStories />
+
+			{/* SEO-Friendly FAQ Section */}
+			<section className="py-16">
+				<div className="max-w-4xl mx-auto px-4">
+					<div className="text-center mb-12">
+						<h2 className="text-3xl md:text-4xl font-bold text-medical-dark mb-4">
+							❓ Frequently Asked Questions
 						</h2>
-						<p className="text-lg md:text-xl text-blue-100 leading-relaxed">
-							Our DCECE college predictor employs a powerful AI-driven
-							methodology that has been trained on years of DCECE data and
-							trends. By analyzing DCECE rank vs marks patterns from previous
-							years alongside official cut-off ranks and admission statistics,
-							the tool can align its predictions with the latest exam difficulty
-							and scoring trends.
+						<p className="text-xl text-gray-600">
+							Everything you need to know about Bihar nursing college admissions
 						</p>
-						<div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
-							<div className="bg-white/10 backdrop-blur-sm rounded-xl p-6">
-								<div className="w-12 h-12 bg-primary-500 rounded-lg flex items-center justify-center mb-4 mx-auto">
-									<svg
-										className="w-6 h-6 text-white"
-										fill="currentColor"
-										viewBox="0 0 20 20"
-									>
-										<path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-									</svg>
-								</div>
-								<h3 className="text-lg font-semibold mb-2">
-									Real-time Adjustments
-								</h3>
-								<p className="text-blue-200 text-sm">
-									Adapts to exam difficulty changes and current scenario trends
-								</p>
-							</div>
-							<div className="bg-white/10 backdrop-blur-sm rounded-xl p-6">
-								<div className="w-12 h-12 bg-primary-500 rounded-lg flex items-center justify-center mb-4 mx-auto">
-									<svg
-										className="w-6 h-6 text-white"
-										fill="currentColor"
-										viewBox="0 0 20 20"
-									>
-										<path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" />
-									</svg>
-								</div>
-								<h3 className="text-lg font-semibold mb-2">
-									Historical Analysis
-								</h3>
-								<p className="text-blue-200 text-sm">
-									Factors in opening & closing ranks, seat availability data
-								</p>
-							</div>
-							<div className="bg-white/10 backdrop-blur-sm rounded-xl p-6">
-								<div className="w-12 h-12 bg-primary-500 rounded-lg flex items-center justify-center mb-4 mx-auto">
-									<svg
-										className="w-6 h-6 text-white"
-										fill="currentColor"
-										viewBox="0 0 20 20"
-									>
-										<path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-									</svg>
-								</div>
-								<h3 className="text-lg font-semibold mb-2">
-									Accurate Estimates
-								</h3>
-								<p className="text-blue-200 text-sm">
-									Precise college admission chances with safety indicators
-								</p>
-							</div>
+					</div>
+
+					<div className="space-y-6">
+						<div className="bg-white rounded-2xl p-6 shadow-lg border border-medical-light">
+							<h3 className="text-lg font-semibold text-medical-dark mb-2">
+								How accurate is the Bihar nursing college predictor?
+							</h3>
+							<p className="text-gray-600">
+								Our AI-powered predictor has a 95% accuracy rate, trained on
+								historical DCECE data from 2020-2025. It analyzes rank trends,
+								cutoff patterns, and seat availability to provide reliable
+								predictions.
+							</p>
+						</div>
+
+						<div className="bg-white rounded-2xl p-6 shadow-lg border border-medical-light">
+							<h3 className="text-lg font-semibold text-medical-dark mb-2">
+								Which nursing programs are covered in the predictor?
+							</h3>
+							<p className="text-gray-600">
+								We cover all major nursing programs in Bihar including ANM
+								(Auxiliary Nursing & Midwifery), GNM (General Nursing &
+								Midwifery), and DRESSER programs across 2,111+ colleges.
+							</p>
+						</div>
+
+						<div className="bg-white rounded-2xl p-6 shadow-lg border border-medical-light">
+							<h3 className="text-lg font-semibold text-medical-dark mb-2">
+								Is the college predictor really free to use?
+							</h3>
+							<p className="text-gray-600">
+								Yes, absolutely! Our Bihar nursing college predictor is 100%
+								free with no hidden charges. We believe in supporting nursing
+								aspirants and making quality guidance accessible to all.
+							</p>
+						</div>
+
+						<div className="bg-white rounded-2xl p-6 shadow-lg border border-medical-light">
+							<h3 className="text-lg font-semibold text-medical-dark mb-2">
+								How does Study With Ritesh coaching help with DCECE preparation?
+							</h3>
+							<p className="text-gray-600">
+								Study With Ritesh offers comprehensive DCECE coaching with 8+
+								years of experience, 95% success rate, daily live classes, mock
+								tests, and personalized mentorship for nursing aspirants.
+							</p>
 						</div>
 					</div>
 				</div>
-			</div>
-
-			{/* Main Prediction Form */}
-			<div className="max-w-4xl mx-auto">
-				<PredictForm />
-			</div>
-
-			{/* How it Works Section */}
-			<div className="max-w-6xl mx-auto">
-				<div className="text-center mb-12">
-					<h2 className="text-3xl md:text-4xl font-bold text-newton-900 mb-4">
-						How Our Predictor Works
-					</h2>
-					<p className="text-xl text-newton-600 max-w-3xl mx-auto">
-						Our advanced AI algorithm combines historical data with machine
-						learning to provide accurate college predictions
-					</p>
-				</div>
-
-				<div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-					<div className="text-center space-y-4">
-						<div className="w-16 h-16 bg-gradient-to-br from-primary-500 to-primary-700 rounded-2xl flex items-center justify-center mx-auto">
-							<span className="text-2xl font-bold text-white">1</span>
-						</div>
-						<h3 className="text-xl font-semibold text-newton-900">
-							Enter Your Details
-						</h3>
-						<p className="text-newton-600">
-							Input your DCECE rank and category to get started with
-							personalized predictions
-						</p>
-					</div>
-
-					<div className="text-center space-y-4">
-						<div className="w-16 h-16 bg-gradient-to-br from-primary-500 to-primary-700 rounded-2xl flex items-center justify-center mx-auto">
-							<span className="text-2xl font-bold text-white">2</span>
-						</div>
-						<h3 className="text-xl font-semibold text-newton-900">
-							AI Analysis
-						</h3>
-						<p className="text-newton-600">
-							Our AI analyzes historical trends and current data to predict your
-							college options
-						</p>
-					</div>
-
-					<div className="text-center space-y-4">
-						<div className="w-16 h-16 bg-gradient-to-br from-primary-500 to-primary-700 rounded-2xl flex items-center justify-center mx-auto">
-							<span className="text-2xl font-bold text-white">3</span>
-						</div>
-						<h3 className="text-xl font-semibold text-newton-900">
-							Get Results
-						</h3>
-						<p className="text-newton-600">
-							Receive detailed college list with safety levels and AI counselor
-							advice
-						</p>
-					</div>
-				</div>
-			</div>
+			</section>
 		</div>
 	);
 }

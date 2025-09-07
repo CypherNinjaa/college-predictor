@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import CollegeResults from "./CollegeResults";
 import LoadingSpinner from "./LoadingSpinner";
+import PredictionAnimation from "./PredictionAnimation";
 
 interface PredictFormData {
 	rank: string;
@@ -38,6 +39,10 @@ export default function PredictForm() {
 	const [loading, setLoading] = useState(false);
 	const [result, setResult] = useState<PredictionResult | null>(null);
 	const [error, setError] = useState<string | null>(null);
+	const [showAnimation, setShowAnimation] = useState(false);
+
+	// Ref for scrolling to results area
+	const resultsRef = useRef<HTMLDivElement>(null);
 
 	const categories = [
 		{ value: "UR", label: "Unreserved (UR)" },
@@ -85,6 +90,7 @@ export default function PredictForm() {
 		setLoading(true);
 		setError(null);
 		setResult(null);
+		setShowAnimation(false);
 
 		try {
 			const response = await fetch("/api/predict", {
@@ -108,12 +114,34 @@ export default function PredictForm() {
 				throw new Error(data.error || "Failed to predict colleges");
 			}
 
+			// First scroll to results area
+			setTimeout(() => {
+				if (resultsRef.current) {
+					resultsRef.current.scrollIntoView({
+						behavior: "smooth",
+						block: "start",
+					});
+				}
+			}, 100);
+
+			// Then show animation after scroll
+			setTimeout(() => {
+				setShowAnimation(true);
+			}, 800);
+
+			// Store the result to show after animation
 			setResult(data);
 		} catch (err: any) {
 			setError(err.message || "Something went wrong. Please try again.");
+			setShowAnimation(false); // Hide animation on error
 		} finally {
 			setLoading(false);
 		}
+	};
+
+	const handleAnimationComplete = () => {
+		setShowAnimation(false);
+		// Results will be shown automatically since result state is already set
 	};
 
 	const handleReset = () => {
@@ -128,6 +156,7 @@ export default function PredictForm() {
 		setResult(null);
 		setError(null);
 		setLoading(false);
+		setShowAnimation(false);
 	};
 
 	return (
@@ -428,18 +457,37 @@ export default function PredictForm() {
 				</div>
 			</div>
 
-			{/* Results */}
-			{result && (
-				<CollegeResults
-					data={result}
-					userRank={parseInt(formData.rank)}
-					userCategory={formData.category}
-					examType={formData.examType}
-					branch={formData.branch}
-					collegeType={formData.collegeType}
-					onReset={handleReset}
-				/>
-			)}
+			{/* Results Area */}
+			<div ref={resultsRef} className="min-h-[200px] space-y-6">
+				{/* Animation Component */}
+				{showAnimation && (
+					<PredictionAnimation
+						showAnimation={showAnimation}
+						onAnimationComplete={handleAnimationComplete}
+					/>
+				)}
+
+				{/* Results */}
+				{result && !showAnimation && (
+					<CollegeResults
+						data={result}
+						userRank={parseInt(formData.rank)}
+						userCategory={formData.category}
+						examType={formData.examType}
+						branch={formData.branch}
+						collegeType={formData.collegeType}
+						onReset={handleReset}
+					/>
+				)}
+
+				{/* Loading State in Results Area */}
+				{loading && !showAnimation && (
+					<div className="bg-white rounded-3xl shadow-newton-lg p-8 text-center">
+						<LoadingSpinner />
+						<p className="text-newton-600 mt-4">Preparing your results...</p>
+					</div>
+				)}
+			</div>
 
 			{/* Subtle Disclaimer */}
 			<div className="mt-8 text-center">
