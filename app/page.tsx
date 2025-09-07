@@ -7,14 +7,15 @@ export default function HomePage() {
 			<div className="text-center space-y-8 pt-8">
 				<div className="max-w-4xl mx-auto space-y-6">
 					<h1 className="text-5xl md:text-6xl font-bold text-newton-900 leading-tight">
-						Bihar Nursing College Predictor
+						Bihar [PM/PMM] Government College Predictor
+						
 						<span className="block text-primary-600 text-4xl md:text-5xl mt-2">
 							2025
 						</span>
 					</h1>
 					<p className="text-xl md:text-2xl text-newton-600 max-w-3xl mx-auto leading-relaxed">
 						Get AI-powered predictions for Bihar nursing colleges based on your
-						DCECE rank. Discover ANM and GNM programs that match your profile.
+						DCECE rank. Discover ANM, GNM and other programs that match your profile.
 					</p>
 
 					{/* Trust Indicators */}
