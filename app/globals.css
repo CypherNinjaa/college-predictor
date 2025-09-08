@@ -1,3 +1,97 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Critical CSS inlined in head for FCP optimization */
+@import url("./critical.css");
+
+/* Font Fallback Configuration */
+@font-face {
+	font-family: "Inter Fallback";
+	src: local("system-ui"), local("Arial"), local("sans-serif");
+	font-display: swap;
+}
+
+/* Medical Theme Custom Colors */
+:root {
+	--medical-blue: #1e40af;
+	--medical-light: #dbeafe;
+	--medical-dark: #1e293b;
+	--medical-green: #059669;
+	--medical-red: #dc2626;
+	--medical-purple: #7c3aed;
+}
+
+/* Medical Theme Classes */
+.text-medical-blue {
+	color: var(--medical-blue);
+}
+.text-medical-dark {
+	color: var(--medical-dark);
+}
+.text-medical-green {
+	color: var(--medical-green);
+}
+.bg-medical-light {
+	background-color: var(--medical-light);
+}
+.bg-medical-blue {
+	background-color: var(--medical-blue);
+}
+.border-medical-light {
+	border-color: var(--medical-light);
+}
+.border-medical-blue {
+	border-color: var(--medical-blue);
+}
+
+/* Custom Animations for Medical Theme */
+@keyframes pulse-medical {
+	0%,
+	100% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0.7;
+	}
+}
+
+@keyframes float-medical {
+	0%,
+	100% {
+		transform: translateY(0px);
+	}
+	50% {
+		transform: translateY(-10px);
+	}
+}
+
+.animate-pulse-medical {
+	animation: pulse-medical 2s infinite;
+}
+.animate-float-medical {
+	animation: float-medical 3s ease-in-out infinite;
+}
+
+/* Smooth scrolling for anchor links */
+html {
+	scroll-behavior: smooth;
+}
+
+/* Custom scrollbar for medical theme */
+::-webkit-scrollbar {
+	width: 8px;
+}
+
+::-webkit-scrollbar-track {
+	background: var(--medical-light);
+}
+
+::-webkit-scrollbar-thumb {
+	background: var(--medical-blue);
+	border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: #1d4ed8;
+}
