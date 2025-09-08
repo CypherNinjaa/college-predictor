@@ -55,7 +55,9 @@ export default function Header() {
 								alt="Study With Ritesh Logo"
 								width={120}
 								height={50}
+								priority
 								className="w-20 h-8 sm:w-28 sm:h-12 md:w-36 md:h-16 rounded-lg shadow-md object-contain"
+								style={{ width: "auto", height: "auto" }}
 							/>
 						</div>
 						<div className="min-w-0 flex-1">

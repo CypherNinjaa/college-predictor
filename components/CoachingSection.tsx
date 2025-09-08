@@ -1,9 +1,23 @@
 "use client";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 export default function CoachingSection() {
 	const [currentSlide, setCurrentSlide] = useState(0);
+
+	// Memoize slide change function
+	const goToSlide = useCallback((index: number) => {
+		setCurrentSlide(index);
+	}, []);
+
+	// Optimize auto-slide with reduced frequency
+	useEffect(() => {
+		const timer = setInterval(() => {
+			setCurrentSlide((prev) => (prev + 1) % features.length);
+		}, 4000); // Increased from 3000ms to 4000ms for better UX
+
+		return () => clearInterval(timer);
+	}, []);
 
 	const features = [
 		{
@@ -147,6 +161,10 @@ export default function CoachingSection() {
 										width={80}
 										height={80}
 										className="rounded-2xl shadow-lg"
+										loading="lazy"
+										style={{ width: "auto", height: "auto" }}
+										placeholder="blur"
+										blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAQABADASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAeEQACAQUBAQAAAAAAAAAAAAABAgADBBEFITFBkf/aAAwDAQACEQMRAD8A0XYobHURkFEI2A9RYjjgJfWIojeDgdynN2gZbQWAaAHc9gOvPT//2Q=="
 									/>
 								</div>
 								<div>

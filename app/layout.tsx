@@ -3,7 +3,14 @@ import { Inter } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({
+	subsets: ["latin"],
+	display: "swap",
+	weight: ["400", "500", "600", "700"],
+	preload: true,
+	fallback: ["system-ui", "arial", "sans-serif"],
+	adjustFontFallback: false,
+});
 
 export const metadata = {
 	title:
@@ -51,14 +58,45 @@ export default function RootLayout({
 	children: React.ReactNode;
 }) {
 	return (
-		<html lang="en">
+		<html lang="en" className={inter.className}>
 			<head>
-				{/* Google AdSense */}
-				<script
-					async
-					src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXX"
-					crossOrigin="anonymous"
-				></script>
+				<link rel="preconnect" href="https://fonts.googleapis.com" />
+				<link
+					rel="preconnect"
+					href="https://fonts.gstatic.com"
+					crossOrigin=""
+				/>
+				<link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+
+				{/* Favicon */}
+				<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+				<link
+					rel="apple-touch-icon"
+					sizes="180x180"
+					href="/apple-touch-icon.png"
+				/>
+				<link
+					rel="icon"
+					type="image/png"
+					sizes="32x32"
+					href="/favicon-32x32.png"
+				/>
+				<link
+					rel="icon"
+					type="image/png"
+					sizes="16x16"
+					href="/favicon-16x16.png"
+				/>
+
+				{/* Google AdSense - Replace with your actual AdSense client ID when available */}
+				{process.env.NODE_ENV === "production" &&
+					process.env.NEXT_PUBLIC_ADSENSE_CLIENT && (
+						<script
+							async
+							src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_ADSENSE_CLIENT}`}
+							crossOrigin="anonymous"
+						></script>
+					)}
 
 				{/* Structured Data for SEO */}
 				<script
@@ -97,7 +135,7 @@ export default function RootLayout({
 					}}
 				/>
 			</head>
-			<body className={inter.className}>
+			<body className={`${inter.className} antialiased`}>
 				<div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50">
 					{/* Header */}
 					<Header />

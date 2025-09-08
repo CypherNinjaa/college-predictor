@@ -14,6 +14,18 @@ interface Story {
 
 export default function SuccessStories() {
 	const [currentSlide, setCurrentSlide] = useState(0);
+	const [isMounted, setIsMounted] = useState(false);
+	const [windowWidth, setWindowWidth] = useState(1024); // Default to desktop
+
+	// Handle client-side mounting
+	useEffect(() => {
+		setIsMounted(true);
+		setWindowWidth(window.innerWidth);
+
+		const handleResize = () => setWindowWidth(window.innerWidth);
+		window.addEventListener("resize", handleResize);
+		return () => window.removeEventListener("resize", handleResize);
+	}, []);
 
 	const stories: Story[] = [
 		{
@@ -101,7 +113,8 @@ export default function SuccessStories() {
 
 	const getVisibleStories = () => {
 		// Desktop: show 3 stories, Mobile: show 1 story
-		const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+		// SSR-safe: default to desktop view until mounted
+		const isMobile = isMounted && windowWidth < 768;
 		const storiesPerView = isMobile ? 1 : 3;
 
 		const visibleStories = [];

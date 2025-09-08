@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Critical CSS inlined in head for FCP optimization */
+@import url("./critical.css");
+
+/* Font Fallback Configuration */
+@font-face {
+	font-family: "Inter Fallback";
+	src: local("system-ui"), local("Arial"), local("sans-serif");
+	font-display: swap;
+}
+
 /* Medical Theme Custom Colors */
 :root {
 	--medical-blue: #1e40af;
