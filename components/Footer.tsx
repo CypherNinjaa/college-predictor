@@ -14,7 +14,7 @@ export default function Footer() {
 								<Image
 									src="/assets/SRW logo 1 (1).png"
 									alt="Study With Ritesh Logo"
-									width={60}
+									width={140}
 									height={60}
 									className="rounded-xl shadow-lg"
 									loading="lazy"

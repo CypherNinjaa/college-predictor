@@ -72,27 +72,6 @@ export default function Header() {
 
 					{/* Desktop Navigation */}
 					<div className="hidden lg:flex items-center space-x-4 xl:space-x-6">
-						<nav className="flex items-center space-x-4 xl:space-x-6">
-							<Link
-								href="#predictor"
-								className="text-medical-dark hover:text-medical-blue font-medium transition-colors text-sm xl:text-base"
-							>
-								College Predictor
-							</Link>
-							<Link
-								href="#coaching"
-								className="text-medical-dark hover:text-medical-blue font-medium transition-colors text-sm xl:text-base"
-							>
-								Coaching Center
-							</Link>
-							<Link
-								href="#about"
-								className="text-medical-dark hover:text-medical-blue font-medium transition-colors text-sm xl:text-base"
-							>
-								About Us
-							</Link>
-						</nav>
-
 						{/* Social Media Links */}
 						<div className="flex items-center space-x-2">
 							<a
@@ -243,20 +222,6 @@ export default function Header() {
 				{mobileMenuOpen && (
 					<div className="md:hidden border-t border-gray-200 py-4">
 						<div className="space-y-4">
-							<Link
-								href="#predictor"
-								className="block text-medical-dark hover:text-medical-blue font-medium"
-								onClick={() => setMobileMenuOpen(false)}
-							>
-								College Predictor
-							</Link>
-							<Link
-								href="#coaching"
-								className="block text-medical-dark hover:text-medical-blue font-medium"
-								onClick={() => setMobileMenuOpen(false)}
-							>
-								Coaching Center
-							</Link>
 							<div className="flex items-center space-x-3 pt-2">
 								<span className="text-sm text-medical-dark">Follow us:</span>
 								<div className="flex space-x-2">

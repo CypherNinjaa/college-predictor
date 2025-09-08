@@ -158,7 +158,7 @@ export default function CoachingSection() {
 									<Image
 										src="/assets/SRW logo 1 (1).png"
 										alt="Study With Ritesh Logo"
-										width={80}
+										width={120}
 										height={80}
 										className="rounded-2xl shadow-lg"
 										loading="lazy"
