@@ -224,7 +224,7 @@ export default function CoachingSection() {
 						{/* Social Media Links */}
 						<div className="flex flex-col sm:flex-row gap-3">
 							<a
-								href="https://www.youtube.com/@studywithritesh"
+								href="https://www.youtube.com/@studywithritesh8678"
 								target="_blank"
 								rel="noopener noreferrer"
 								className="bg-red-500 hover:bg-red-600 text-white px-4 py-3 rounded-xl font-semibold flex items-center justify-center space-x-2 transition-all transform hover:scale-105 shadow-lg flex-1 text-sm"
@@ -242,7 +242,7 @@ export default function CoachingSection() {
 								<span className="xs:hidden">YouTube</span>
 							</a>
 							<a
-								href="https://t.me/studywithritesh"
+								href="https://t.me/Studywithritesh"
 								target="_blank"
 								rel="noopener noreferrer"
 								className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-3 rounded-xl font-semibold flex items-center justify-center space-x-2 transition-all transform hover:scale-105 shadow-lg flex-1 text-sm"
@@ -360,7 +360,7 @@ export default function CoachingSection() {
 							{/* CTA Button */}
 							<div className="mt-8 text-center">
 								<a
-									href="https://t.me/studywithritesh"
+									href="https://t.me/Studywithritesh"
 									target="_blank"
 									rel="noopener noreferrer"
 									className="inline-flex items-center bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all transform hover:scale-105"
