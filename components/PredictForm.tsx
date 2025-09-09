@@ -58,11 +58,11 @@ export default function PredictForm() {
 	const examTypes = [
 		{
 			value: "DCECE_PM",
-			label: "DCECE [PM] - Physics, Chemistry, Mathematics",
+			label: "DCECE [PM]",
 		},
 		{
 			value: "DCECE_PMM",
-			label: "DCECE [PMM] - Physics, Mathematics, Mathematics",
+			label: "DCECE [PMM]",
 		},
 	];
 

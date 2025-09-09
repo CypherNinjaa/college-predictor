@@ -50,19 +50,19 @@ export default function HomePage() {
 										clipRule="evenodd"
 									/>
 								</svg>
-								🏥 Bihar's #1 Nursing College Predictor • 100% Free
+								🏥 Bihar's #1 Govt College Predictor • 100% Free
 							</div>
 
 							<h1 className="text-4xl md:text-6xl font-bold text-medical-dark leading-tight">
-								Find Your Perfect
-								<span className="block text-medical-blue">Nursing College</span>
+								Bihar [PM/PMM]
+								<span className="block text-medical-blue">Govt College</span>
 								<span className="block text-3xl md:text-4xl text-green-600 mt-2">
-									DCECE 2025 🩺
+									Predictor 🩺
 								</span>
 							</h1>
 
 							<p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-								Get AI-powered predictions for Bihar nursing colleges based on
+								Get AI-powered predictions for Bihar govt colleges based on
 								your DCECE rank.
 								<span className="text-medical-blue font-semibold">
 									ANM, GNM & DRESSER programs
