@@ -62,7 +62,7 @@ export default function Header() {
 						</div>
 						<div className="min-w-0 flex-1">
 							<h1 className="text-sm sm:text-lg md:text-xl font-bold text-medical-dark truncate">
-								Bihar Nursing College Predictor
+								Bihar Govt College Predictor
 							</h1>
 							<p className="text-xs sm:text-sm text-medical-blue font-medium truncate">
 								By Study With Ritesh • DCECE 2025
