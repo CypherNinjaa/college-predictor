@@ -15,11 +15,24 @@ export default function PredictionAnimation({
 	const [isVideoLoaded, setIsVideoLoaded] = useState(false);
 
 	useEffect(() => {
-		if (showAnimation && videoRef.current && isVideoLoaded) {
-			videoRef.current.currentTime = 0;
-			videoRef.current.play().catch(console.error);
+		if (showAnimation) {
+			// Safety timeout: auto-complete animation after 3.5 seconds if video fails/stalls
+			const safetyTimer = setTimeout(() => {
+				console.log("PredictionAnimation: safety timeout reached, completing.");
+				onAnimationComplete();
+			}, 3500);
+
+			if (videoRef.current && isVideoLoaded) {
+				videoRef.current.currentTime = 0;
+				videoRef.current.play().catch((err) => {
+					console.error("Video play failed, fallback to autocomplete", err);
+					setTimeout(onAnimationComplete, 500);
+				});
+			}
+
+			return () => clearTimeout(safetyTimer);
 		}
-	}, [showAnimation, isVideoLoaded]);
+	}, [showAnimation, isVideoLoaded, onAnimationComplete]);
 
 	const handleVideoEnded = () => {
 		// Add a small delay before completing animation for better UX
