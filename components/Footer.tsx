@@ -11,15 +11,20 @@ export default function Footer() {
 					<div className="lg:col-span-2 space-y-6">
 						<div className="flex items-center space-x-4">
 							<div className="relative">
-								<Image
-									src="/assets/SRW logo 1 (1).png"
-									alt="Study With Ritesh Logo"
-									width={140}
-									height={60}
-									className="rounded-xl shadow-lg"
-									loading="lazy"
-									style={{ width: "auto", height: "auto" }}
-								/>
+								<div className="flex-shrink-0 flex items-center justify-center w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-800 text-white rounded-xl shadow-md border border-blue-500 relative overflow-hidden group">
+									<div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+									<div className="flex flex-col items-center justify-center leading-none">
+										<span className="text-sm font-black tracking-wider uppercase">SWR</span>
+										<svg
+											className="w-4 h-4 mt-0.5 text-blue-200"
+											fill="currentColor"
+											viewBox="0 0 20 20"
+										>
+											<path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3z" />
+											<path d="M7.667 10.845l1.94.83a1 1 0 00.787 0l7-3v3.75a1 1 0 01-.553.894l-7 3.5a1 1 0 01-.894 0l-7-3.5a1 1 0 01-.553-.894V8.675l7 3.17z" />
+										</svg>
+									</div>
+								</div>
 							</div>
 							<div>
 								<h3 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-green-400 bg-clip-text text-transparent">

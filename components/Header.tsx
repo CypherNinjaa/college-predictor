@@ -50,15 +50,20 @@ export default function Header() {
 					{/* Logo and Brand */}
 					<div className="flex items-center space-x-2 sm:space-x-4 flex-1 min-w-0">
 						<div className="relative flex-shrink-0">
-							<Image
-								src="/assets/SRW logo 1 (1).png"
-								alt="Study With Ritesh Logo"
-								width={120}
-								height={50}
-								priority
-								className="w-20 h-8 sm:w-28 sm:h-12 md:w-36 md:h-16 rounded-lg shadow-md object-contain"
-								style={{ width: "auto", height: "auto" }}
-							/>
+							<div className="flex-shrink-0 flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-600 to-blue-800 text-white rounded-xl shadow-md border border-blue-500 relative overflow-hidden group">
+								<div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+								<div className="flex flex-col items-center justify-center leading-none">
+									<span className="text-xs sm:text-sm font-black tracking-wider uppercase">SWR</span>
+									<svg
+										className="w-3.5 h-3.5 sm:w-4 sm:h-4 mt-0.5 text-blue-200"
+										fill="currentColor"
+										viewBox="0 0 20 20"
+									>
+										<path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3z" />
+										<path d="M7.667 10.845l1.94.83a1 1 0 00.787 0l7-3v3.75a1 1 0 01-.553.894l-7 3.5a1 1 0 01-.894 0l-7-3.5a1 1 0 01-.553-.894V8.675l7 3.17z" />
+									</svg>
+								</div>
+							</div>
 						</div>
 						<div className="min-w-0 flex-1">
 							<h1 className="text-sm sm:text-lg md:text-xl font-bold text-medical-dark truncate">
